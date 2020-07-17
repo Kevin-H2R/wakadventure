@@ -9,6 +9,9 @@ import {Routes} from "./routes";
 import {User} from "./entity/User";
 import { WakaTimeClient, RANGE } from 'wakatime-client';
 import * as dotenv from 'dotenv';
+import {WakaClient} from "./misc/WakaClient"
+import e = require("express");
+
 
 createConnection().then(async connection => {
 
@@ -19,12 +22,17 @@ createConnection().then(async connection => {
     app.use(helmet());
     app.use(bodyParser.json());
 
-    const client = new WakaTimeClient(process.env.API_KEY);
-
+    // const client = new WakaTimeClient(process.env.API_KEY);
+    const client = WakaClient.getInstance().getClient();
     app.get("/", async (req: Request, res: Response) => {
         try {
-            const userDetails =  await client.getMyHeartbeats('2020-07-17');
-            res.json({"toto": userDetails})
+            const userDetails =  await client.getMySummary({dateRange: {startDate: '2020-07-17T00:00:00Z', endDate: '2020-07-17T12:00:00Z'}});
+            // const userDetails =  await client.getMyHeartbeats('2020-07-17');
+            // const userDetails = await client.getMyStats({ range: RANGE.LAST_7_DAYS })
+            // const tsDetails = userDetails.data.filter(c => c.language === 'TypeScript')
+            // console.log(tsDetails)
+            // console.log(userDetails)
+            res.json({ "time": userDetails})
         }
         catch (err) {
             console.log(err.response.data)

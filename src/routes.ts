@@ -1,5 +1,6 @@
 import {UserController} from "./controller/UserController";
-
+import {CharacterController} from "./controller/CharacterController"
+import {ActivityController} from "./controller/ActivityController"
 export const Routes = [{
     method: "get",
     route: "/users",
@@ -20,4 +21,14 @@ export const Routes = [{
     route: "/users/:id",
     controller: UserController,
     action: "remove"
+}, {
+    method: "post",
+    route: "/character/create",
+    controller: CharacterController,
+    action: "create"
+}, {
+    method: "post",
+    route: "/activity/retrieve",
+    controller: ActivityController,
+    action: "save"
 }];

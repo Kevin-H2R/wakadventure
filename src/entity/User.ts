@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import {Character} from "./Character"
+import { Activity } from "./Activity";
 
 @Entity()
 export class User {
@@ -7,12 +9,26 @@ export class User {
     id: number;
 
     @Column()
-    firstName: string;
+    firstname: string;
 
     @Column()
-    lastName: string;
+    lastname: string;
+
+    @Column({unique: true})
+    email: string;
+
+    @Column({unique: true})
+    username: string;
 
     @Column()
-    age: number;
+    password: string
 
+    @Column()
+    hash: string;
+
+    @OneToMany(type => Character, character => character.user)
+    characters: Character[]
+
+    @OneToMany(type => Activity, activity => activity.user)
+    activities: Activity[]
 }
