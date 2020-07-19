@@ -31,4 +31,9 @@ export const Routes = [{
     route: "/activity/retrieve",
     controller: ActivityController,
     action: "save"
+}, {
+    method: "get",
+    route: "/",
+    controller: UserController,
+    action: "getInfos"
 }];

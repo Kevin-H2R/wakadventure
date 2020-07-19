@@ -10,6 +10,9 @@ export class Character {
     @Column()
     name: string;
 
+    @Column()
+    creation_date: Date;
+
     @ManyToOne(type => User, user => user.characters)
     user: User
 

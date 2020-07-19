@@ -1,6 +1,7 @@
 import {getRepository} from "typeorm";
 import {NextFunction, Request, Response} from "express";
 import {User} from "../entity/User";
+import {Character} from "../entity/Character";
 
 export class UserController {
 
@@ -21,6 +22,16 @@ export class UserController {
     async remove(request: Request, response: Response, next: NextFunction) {
         let userToRemove = await this.userRepository.findOne(request.params.id);
         await this.userRepository.remove(userToRemove);
+    }
+
+    async getInfos(request: Request, response: Response, next: NextFunction) {
+        const infos = await this.userRepository.createQueryBuilder("user")
+                    .innerJoinAndSelect("user.characters", "character")
+                    .innerJoinAndSelect("user.activities", "activity")
+                    .getMany()
+
+
+        response.json({})
     }
 
 }

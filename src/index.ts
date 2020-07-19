@@ -22,24 +22,6 @@ createConnection().then(async connection => {
     app.use(helmet());
     app.use(bodyParser.json());
 
-    // const client = new WakaTimeClient(process.env.API_KEY);
-    const client = WakaClient.getInstance().getClient();
-    app.get("/", async (req: Request, res: Response) => {
-        try {
-            const userDetails =  await client.getMySummary({dateRange: {startDate: '2020-07-17T00:00:00Z', endDate: '2020-07-17T12:00:00Z'}});
-            // const userDetails =  await client.getMyHeartbeats('2020-07-17');
-            // const userDetails = await client.getMyStats({ range: RANGE.LAST_7_DAYS })
-            // const tsDetails = userDetails.data.filter(c => c.language === 'TypeScript')
-            // console.log(tsDetails)
-            // console.log(userDetails)
-            res.json({ "time": userDetails})
-        }
-        catch (err) {
-            console.log(err.response.data)
-        } finally {
-            return
-        }
-    })
     // register express routes from defined application routes
     Routes.forEach(route => {
         (app as any)[route.method](route.route, (req: Request, res: Response, next: Function) => {
@@ -58,18 +40,6 @@ createConnection().then(async connection => {
 
     // start express server
     app.listen(3000);
-
-    // insert new users for test
-    // await connection.manager.save(connection.manager.create(User, {
-    //     firstName: "Timber",
-    //     lastName: "Saw",
-    //     age: 27
-    // }));
-    // await connection.manager.save(connection.manager.create(User, {
-    //     firstName: "Phantom",
-    //     lastName: "Assassin",
-    //     age: 24
-    // }));
 
     console.log("Express server has started on port 3000. Open http://localhost:3000/users to see results");
 
