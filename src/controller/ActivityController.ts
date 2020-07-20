@@ -9,7 +9,7 @@ export class ActivityController {
     private activityRepository = getRepository(Activity)
 
     async save(request: Request, response: Response, next: NextFunction) {
-        const userDetails = await this.retrieveUserDetails(request.body.id)
+        const userDetails = await this.retrieveUserDetails(request.body.character_id)
         if (userDetails === null) {
             response.json({})
             return
@@ -49,7 +49,6 @@ export class ActivityController {
                                 .createQueryBuilder("activity")
                                 .orderBy("activity.date", "DESC")
                                 .getOne();
-        console.log(lastActivity, yesterdayDate)
         if (lastActivity && lastActivity.date.toISOString().slice(0, 10) === yesterdayDate) {
             return null
         }

@@ -28,6 +28,11 @@ export const Routes = [{
     action: "create"
 }, {
     method: "post",
+    route: "/character",
+    controller: CharacterController,
+    action: 'getInfos'
+},{
+    method: "post",
     route: "/activity/retrieve",
     controller: ActivityController,
     action: "save"
