@@ -6,12 +6,7 @@ import * as cors from "cors"
 import * as helmet from "helmet"
 import {Request, Response} from "express";
 import {Routes} from "./routes";
-import {User} from "./entity/User";
-import { WakaTimeClient, RANGE } from 'wakatime-client';
 import * as dotenv from 'dotenv';
-import {WakaClient} from "./misc/WakaClient"
-import e = require("express");
-
 
 createConnection().then(async connection => {
 
