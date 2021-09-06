@@ -9,12 +9,28 @@
 import './styles/app.css';
 
 import Vue from "vue";
+// Vue plugins
+import VueRouter from "vue-router";
 import vuetify from "./plugins/vuetify";
 
+Vue.use(VueRouter)
+
+// Components
 import App from "./components/App";
+import HomeView from "./components/views/HomeView";
+
+// Routes
+const routes = [
+    {path: "/", component: HomeView}
+]
+const router = new VueRouter({
+    routes,
+    mode: 'history'
+})
 
 new Vue({
     vuetify,
+    router,
     render: h => h(App),
     el: "#app"
 })
