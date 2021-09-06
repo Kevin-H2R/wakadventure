@@ -1,3 +1,3 @@
 ### Vuefony
 
-Symfony + vue + vue-router + vuex basic project ready to go
+Symfony + vue + vuetify + vue-router + vuex basic project ready to go
