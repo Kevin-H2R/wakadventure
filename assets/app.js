@@ -11,10 +11,10 @@ import './styles/app.css';
 import Vue from "vue";
 // Vue plugins
 import VueRouter from "vue-router";
+import store from "./plugins/store";
 import vuetify from "./plugins/vuetify";
 
 Vue.use(VueRouter)
-
 // Components
 import App from "./components/App";
 import HomeView from "./components/views/HomeView";
@@ -31,6 +31,7 @@ const router = new VueRouter({
 new Vue({
     vuetify,
     router,
+    store,
     render: h => h(App),
     el: "#app"
 })
