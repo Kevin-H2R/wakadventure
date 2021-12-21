@@ -16,6 +16,9 @@ export default {
     console.log()
     const code = this.$route.query.code
     if (code !== undefined && code !== null) {
+
+      // const formData = new FormData()
+      // formData.append('code', code)
       axios.post("http://localhost:3000/authentication", {code: code}, {headers: {'Access-Control-Allow-Origin': '*'}}).then(r => {
         console.log(r)
       })
