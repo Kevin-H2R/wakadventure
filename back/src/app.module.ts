@@ -7,9 +7,11 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import {User} from "./user/user.entity";
 import { UserModule } from "./user/user.module";
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
+      AuthenticationModule,
       UserModule,
       HttpModule,
       TypeOrmModule.forRoot({
@@ -21,9 +23,10 @@ import { UserModule } from "./user/user.module";
         database: 'wakaland',
         entities: [User],
         synchronize: true,
-      })
+        autoLoadEntities: true
+      }),
   ],
-  controllers: [AppController, AuthenticationController],
-  providers: [AppService, AuthenticationService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
