@@ -19,17 +19,6 @@ export class AuthenticationService {
     formData.append('code', code)
 
     const tokenPromise = await lastValueFrom(this.httpService.post("https://wakatime.com/oauth/token", formData))
-    // let that = this
-    // const insertUser = async function () {
-    //   let user: User = new User();
-    //   user.uid = tokenPromise.data.uid
-    //   user.access_token = tokenPromise.data.access_token
-    //   user.expires_at = tokenPromise.data.expires_at
-    //   user.refresh_token = tokenPromise.data.refresh_token
-    //   return await that.userService.create(user).then(r => {
-    //     return r
-    //   })
-    // }
 
     return await this.userService.findOneByUid(tokenPromise.data.uid)
       .then(r => {
