@@ -1,6 +1,6 @@
 import {HttpException, Injectable} from '@nestjs/common';
 import {HttpService} from "@nestjs/axios";
-import {catchError, map, Observable} from "rxjs";
+import {catchError, lastValueFrom, map, Observable} from "rxjs";
 import {AxiosResponse} from "axios";
 import {User} from "../user/user.entity";
 import {UserService} from "../user/user.service";
@@ -10,7 +10,7 @@ export class AuthenticationService {
   constructor(private httpService: HttpService,
               private userService: UserService) {}
 
-  authenticate(code : string): Observable<AxiosResponse> {
+  async authenticate(code : string): Promise<User> {
     const formData = new URLSearchParams()
     formData.append('client_id', 'fdDqMKJwn3Y614MM3MxAFTuK')
     formData.append('client_secret', 'sec_5528B3u4KZlsyEcl72VcRxVziDhXAsXnTIDbroB2qfFtZaUFwCDMUismmow3LPa7s4BjTXZZo1ZLLorR')
@@ -18,29 +18,21 @@ export class AuthenticationService {
     formData.append('grant_type', 'authorization_code')
     formData.append('code', code)
 
-    return this.httpService.post("https://wakatime.com/oauth/token", formData)
-      .pipe(
-        map(response => {
-          this.userService.findOneByUid(response.data.uid)
-            .then(r => {
-              if (r !== undefined) {
-                return response.data
-              }
-              let user: User = new User();
-              user.uid = response.data.uid
-              user.access_token = response.data.access_token
-              user.expires_at = response.data.expires_at
-              user.refresh_token = response.data.refresh_token
-              this.userService.create(user).then(r => {
-                console.log(r)
-              })
-            })
-          return response.data
+    const tokenPromise = await lastValueFrom(this.httpService.post("https://wakatime.com/oauth/token", formData))
+    return await this.userService.findOneByUid(tokenPromise.data.uid)
+      .then(r => {
+        if (r !== undefined) {
+          return r
+        }
+        let user: User = new User();
+        user.uid = tokenPromise.data.uid
+        user.access_token = tokenPromise.data.access_token
+        user.expires_at = tokenPromise.data.expires_at
+        user.refresh_token = tokenPromise.data.refresh_token
+        this.userService.create(user).then(r => {
+          return r
         })
-      )
-      .pipe(catchError(e => {
-        throw new HttpException(e.response.data, e.response.status)
-      }))
+      })
   }
 
   refresh(refreshToken: string): Observable<AxiosResponse> {

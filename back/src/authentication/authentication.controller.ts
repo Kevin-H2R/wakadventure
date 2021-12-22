@@ -8,6 +8,7 @@ export class AuthenticationController {
 
     @Post()
     authenticate(@Req() request: Request): object {
-        return this.authService.authenticate(request.body['code'])
+        const t = this.authService.authenticate(request.body['code'])
+        return t
     }
 }
