@@ -19,19 +19,24 @@ export class AuthenticationService {
     formData.append('code', code)
 
     const tokenPromise = await lastValueFrom(this.httpService.post("https://wakatime.com/oauth/token", formData))
+    // let that = this
+    // const insertUser = async function () {
+    //   let user: User = new User();
+    //   user.uid = tokenPromise.data.uid
+    //   user.access_token = tokenPromise.data.access_token
+    //   user.expires_at = tokenPromise.data.expires_at
+    //   user.refresh_token = tokenPromise.data.refresh_token
+    //   return await that.userService.create(user).then(r => {
+    //     return r
+    //   })
+    // }
+
     return await this.userService.findOneByUid(tokenPromise.data.uid)
       .then(r => {
         if (r !== undefined) {
           return r
         }
-        let user: User = new User();
-        user.uid = tokenPromise.data.uid
-        user.access_token = tokenPromise.data.access_token
-        user.expires_at = tokenPromise.data.expires_at
-        user.refresh_token = tokenPromise.data.refresh_token
-        this.userService.create(user).then(r => {
-          return r
-        })
+        return this.insertUser(tokenPromise.data)
       })
   }
 
@@ -48,5 +53,16 @@ export class AuthenticationService {
       .pipe(catchError(e => {
         throw new HttpException(e.response.data, e.response.status)
       }))
+  }
+
+  async insertUser(data): Promise<User> {
+    let user: User = new User();
+    user.uid = data.uid
+    user.access_token = data.access_token
+    user.expires_at = data.expires_at
+    user.refresh_token = data.refresh_token
+    return await this.userService.create(user).then(r => {
+      return r
+    })
   }
 }
