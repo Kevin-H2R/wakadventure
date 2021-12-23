@@ -9,7 +9,7 @@ export class StatsController {
 
   @Post("")
   getStats(@Req() request: Request): object {
-    return this.statsService.getStats(request.body['uid'])
+    return this.statsService.getAllTimeStats(request.body['uid'])
   }
 
 }
