@@ -12,8 +12,8 @@ export class AuthenticationService {
 
   async authenticate(code : string): Promise<User> {
     const formData = new URLSearchParams()
-    formData.append('client_id', 'fdDqMKJwn3Y614MM3MxAFTuK')
-    formData.append('client_secret', 'sec_5528B3u4KZlsyEcl72VcRxVziDhXAsXnTIDbroB2qfFtZaUFwCDMUismmow3LPa7s4BjTXZZo1ZLLorR')
+    formData.append('client_id', process.env.CLIENT_ID)
+    formData.append('client_secret', process.env.CLIENT_SECRET)
     formData.append('redirect_uri', 'http://localhost:8080')
     formData.append('grant_type', 'authorization_code')
     formData.append('code', code)
@@ -31,8 +31,8 @@ export class AuthenticationService {
 
   refresh(refreshToken: string): Observable<AxiosResponse> {
     const formData = new URLSearchParams()
-    formData.append('client_id', 'fdDqMKJwn3Y614MM3MxAFTuK')
-    formData.append('client_secret', 'sec_5528B3u4KZlsyEcl72VcRxVziDhXAsXnTIDbroB2qfFtZaUFwCDMUismmow3LPa7s4BjTXZZo1ZLLorR')
+    formData.append('client_id', process.env.CLIENT_ID)
+    formData.append('client_secret', process.env.CLIENT_SECRET)
     formData.append('redirect_uri', 'http://localhost:8080')
     formData.append('grant_type', 'refresh_token')
     formData.append('refresh_token', refreshToken)
