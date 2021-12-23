@@ -10,7 +10,7 @@
       <v-card>
         <v-form @submit.prevent="setUsername()">
           <v-text-field v-model="username" label="Username" />
-          <v-btn type="submit" @click="setUsername()">Validate</v-btn>
+          <v-btn type="submit">Validate</v-btn>
         </v-form>
       </v-card>
     </v-row>
@@ -31,7 +31,7 @@ export default {
   created: function() {
     axios.get('http://localhost:3000', { withCredentials: true })
         .then(response => {
-          if (response.data !== null) {
+          if (response.data !== "") {
             this.$store.commit('setUser', response.data)
             this.firstTime = response.data.username === null
             return
@@ -57,6 +57,8 @@ export default {
       axios.post("http://localhost:3000/users/username", {uid: user.uid, username: this.username})
             .then(r => {
               console.log(r)
+              this.$store.commit('setUsername', this.username)
+              this.firstTime = false
             })
     }
   },
