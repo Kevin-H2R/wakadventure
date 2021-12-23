@@ -7,7 +7,7 @@ export class Stats {
   id: number;
 
   @Column()
-  timestamp: number;
+  timestamp: string;
 
   @Column()
   json: string;

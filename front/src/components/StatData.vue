@@ -12,7 +12,7 @@ import axios from "axios";
 export default {
   name: "stat-data",
   created: function () {
-    axios.post("http://localhost:3000/stats", {uid: this.$store.getters.user.uid}).then(r => {
+    axios.get("http://localhost:3000/stats", { withCredentials: true }).then(r => {
       console.log(r)
     })
   },

@@ -14,7 +14,7 @@ export class StatsService {
               private statsRepository: Repository<Stats>
               ) {}
 
-  async getTodayStats(uid: string): Promise<object> {
+  async retrieveYesterdayStats(uid: string): Promise<object> {
     const user = await this.userService.findOneByUid(uid)
     const token = user.access_token
     const param = new URLSearchParams()
@@ -22,12 +22,13 @@ export class StatsService {
     param.append('client_secret', process.env.CLIENT_SECRET)
     param.append('start', new Date().toDateString())
     param.append('end', new Date().toDateString())
-    param.append('range', 'Today')
+    param.append('range', 'Yesterday')
     return this.httpService.get("https://wakatime.com/api/v1/users/current/summaries?" + param.toString())
       .pipe(
         map(r => {
           let stats: Stats = new Stats()
-          stats.timestamp = Date.now()
+          console.log(Date.now())
+          stats.timestamp = (Date.now() - 24*60*60*1000).toString()
           stats.json = JSON.stringify(r.data)
           stats.user = user
           this.statsRepository.save(stats)
