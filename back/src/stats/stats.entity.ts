@@ -6,8 +6,8 @@ export class Stats {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({type: 'date'})
-  date: string;
+  @Column()
+  timestamp: number;
 
   @Column()
   json: string;
