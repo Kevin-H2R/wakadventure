@@ -8,6 +8,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import {User} from "./user/user.entity";
 import { UserModule } from "./user/user.module";
 import { AuthenticationModule } from './authentication/authentication.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
         synchronize: true,
         autoLoadEntities: true
       }),
+      StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

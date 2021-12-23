@@ -43,4 +43,9 @@ export class UserService {
     async create(user: User): Promise<User> {
         return this.usersRepository.save(user)
     }
+
+    async getToken(uid: string): Promise<string> {
+        const user : User = await this.usersRepository.findOne({uid: uid})
+        return user.access_token
+    }
 }

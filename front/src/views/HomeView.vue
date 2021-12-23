@@ -16,26 +16,36 @@
     </v-row>
     <v-row v-else-if="firstTime === false">
       Coucou {{ $store.getters.user.username }}
+      <stat-data />
     </v-row>
   </v-container>
 </template>
 
 <script>
 import axios from "axios";
+import StatData from "../components/StatData";
 
 export default {
   name: "HomeView",
+  components: {StatData},
   created: function() {
-    console.log()
-    const code = this.$route.query.code
-    if (code !== undefined && code !== null) {
-      axios.post("http://localhost:3000/authentication", {code: code})
-          .then(r => {
-            this.$store.commit('setUser', r.data)
-            this.firstTime = r.data.username === null
-            window.history.pushState({}, document.title, window.location.pathname)
-          })
-    }
+    axios.get('http://localhost:3000', { withCredentials: true })
+        .then(response => {
+          if (response.data !== null) {
+            this.$store.commit('setUser', response.data)
+            this.firstTime = response.data.username === null
+            return
+          }
+          const code = this.$route.query.code
+          if (code === undefined || code === null) return
+          axios.post("http://localhost:3000/authentication", {code: code}, { withCredentials: true })
+              .then(r => {
+                this.$store.commit('setUser', r.data)
+                this.firstTime = r.data.username === null
+                window.history.pushState({}, document.title, window.location.pathname)
+              })
+        })
+
   },
   methods: {
     getAuthUrl: () => {

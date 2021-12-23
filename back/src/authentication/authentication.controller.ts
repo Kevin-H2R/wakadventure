@@ -7,8 +7,9 @@ export class AuthenticationController {
     constructor(private authService: AuthenticationService) {}
 
     @Post()
-    authenticate(@Req() request: Request): object {
-        const t = this.authService.authenticate(request.body['code'])
+    async authenticate(@Req() request: Request): Promise<object> {
+        const t = await this.authService.authenticate(request.body['code'])
+        request.session['uid'] = t['uid']
         return t
     }
 }
